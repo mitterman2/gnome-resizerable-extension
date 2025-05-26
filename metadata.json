@@ -1,0 +1,9 @@
+{
+  "uuid": "resizerable@home.lan",
+  "name": "Resizerable",
+  "description": "Maximize or resize active window with configurable margins and keyboard shortcuts.",
+  "shell-version": ["44", "45", "46", "47", "48"],
+  "settings-schema": "org.gnome.shell.extensions.resizerable",
+  "url": "",
+  "version": 1
+} 

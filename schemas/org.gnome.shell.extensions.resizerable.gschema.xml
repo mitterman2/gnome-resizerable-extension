@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist>
+  <schema id="org.gnome.shell.extensions.resizerable" path="/org/gnome/shell/extensions/resizerable/">
+    
+    <!-- Margin settings (as fractions from 0.0 to 1.0) -->
+    <key name="margin-left" type="d">
+      <default>0.2</default>
+      <summary>Left margin</summary>
+      <description>Left margin as a fraction of screen width (0.0 to 1.0)</description>
+      <range min="0.0" max="1.0"/>
+    </key>
+    
+    <key name="margin-right" type="d">
+      <default>0.2</default>
+      <summary>Right margin</summary>
+      <description>Right margin as a fraction of screen width (0.0 to 1.0)</description>
+      <range min="0.0" max="1.0"/>
+    </key>
+    
+    <key name="margin-top" type="d">
+      <default>0.2</default>
+      <summary>Top margin</summary>
+      <description>Top margin as a fraction of screen height (0.0 to 1.0)</description>
+      <range min="0.0" max="1.0"/>
+    </key>
+    
+    <key name="margin-bottom" type="d">
+      <default>0.2</default>
+      <summary>Bottom margin</summary>
+      <description>Bottom margin as a fraction of screen height (0.0 to 1.0)</description>
+      <range min="0.0" max="1.0"/>
+    </key>
+    
+    <!-- Keyboard shortcut settings -->
+    <key name="resizerable-maximize-window" type="as">
+      <default>[]</default>
+      <summary>Maximize window shortcut</summary>
+      <description>Keyboard shortcut to maximize the active window</description>
+    </key>
+    
+    <key name="resizerable-resize-window" type="as">
+      <default>[]</default>
+      <summary>Resize window shortcut</summary>
+      <description>Keyboard shortcut to resize the active window with margins</description>
+    </key>
+    
+    <!-- Legacy keys for UI compatibility -->
+    <key name="key-maximize" type="as">
+      <default>[]</default>
+      <summary>Maximize window shortcut (legacy)</summary>
+      <description>Legacy key for UI compatibility</description>
+    </key>
+    
+    <key name="key-resize" type="as">
+      <default>[]</default>
+      <summary>Resize window shortcut (legacy)</summary>
+      <description>Legacy key for UI compatibility</description>
+    </key>
+    
+  </schema>
+</schemalist> 
