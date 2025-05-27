@@ -39,6 +39,22 @@ export default class ResizeablePreferences extends ExtensionPreferences {
         this._createShortcutRow(shortcutsGroup, settings, 'key-maximize', _('Maximize Window'));
         this._createShortcutRow(shortcutsGroup, settings, 'key-resize', _('Resize Window'));
 
+        // Smart minimize group
+        const smartMinimizeGroup = new Adw.PreferencesGroup({
+            title: _('Smart Minimize'),
+            description: _('Configure smart minimize behavior'),
+        });
+        page.add(smartMinimizeGroup);
+
+        const smartMinimizeRow = new Adw.SwitchRow({
+            title: _('Enable Smart Minimize'),
+            subtitle: _('First minimize click resizes to margins, second click minimizes'),
+        });
+        smartMinimizeGroup.add(smartMinimizeRow);
+
+        // Bind the switch to the setting
+        settings.bind('smart-minimize', smartMinimizeRow, 'active', Gio.SettingsBindFlags.DEFAULT);
+
         // Reset group
         const resetGroup = new Adw.PreferencesGroup({
             title: _('Reset'),
@@ -120,8 +136,19 @@ export default class ResizeablePreferences extends ExtensionPreferences {
             title: title,
         });
 
+        // Create a container that can hold either a shortcut label or placeholder text
+        const labelContainer = new Gtk.Box({
+            valign: Gtk.Align.CENTER,
+        });
+
         const shortcutLabel = new Gtk.ShortcutLabel({
             valign: Gtk.Align.CENTER,
+        });
+
+        const placeholderLabel = new Gtk.Label({
+            label: _('Click to set shortcut'),
+            valign: Gtk.Align.CENTER,
+            css_classes: ['dim-label'],
         });
 
         const button = new Gtk.Button({
@@ -129,19 +156,26 @@ export default class ResizeablePreferences extends ExtensionPreferences {
             has_frame: true,
             css_classes: ['flat'],
         });
-        button.set_child(shortcutLabel);
+        button.set_child(labelContainer);
 
         // Update display
         const updateShortcutDisplay = () => {
             const shortcuts = settings.get_strv(key);
+            
+            // Clear the container
+            let child = labelContainer.get_first_child();
+            while (child) {
+                labelContainer.remove(child);
+                child = labelContainer.get_first_child();
+            }
+            
             if (shortcuts.length > 0) {
                 shortcutLabel.set_accelerator(shortcuts[0]);
+                labelContainer.append(shortcutLabel);
                 button.add_css_class('accent');
             } else {
-                shortcutLabel.set_accelerator('');
+                labelContainer.append(placeholderLabel);
                 button.remove_css_class('accent');
-                // Set placeholder text when no shortcut is set
-                shortcutLabel.set_label(_('Click to set shortcut'));
             }
         };
 
@@ -445,5 +479,8 @@ export default class ResizeablePreferences extends ExtensionPreferences {
         // Clear keyboard shortcuts
         settings.set_strv('key-maximize', []);
         settings.set_strv('key-resize', []);
+
+        // Reset smart minimize to default (true)
+        settings.set_boolean('smart-minimize', true);
     }
 } 

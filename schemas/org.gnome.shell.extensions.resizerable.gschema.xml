@@ -57,5 +57,12 @@
       <description>Legacy key for UI compatibility</description>
     </key>
     
+    <!-- Smart minimize setting -->
+    <key name="smart-minimize" type="b">
+      <default>true</default>
+      <summary>Enable smart minimize</summary>
+      <description>When enabled, minimize button focuses other windows instead of minimizing when other windows are visible</description>
+    </key>
+    
   </schema>
 </schemalist> 
