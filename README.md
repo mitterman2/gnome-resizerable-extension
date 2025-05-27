@@ -18,21 +18,40 @@ A GNOME Shell extension that provides keyboard shortcuts to maximize windows or 
 
 ## Installation
 
-### Local Development/Testing
+### Manual Installation (from Source)
 
-1. Copy the extension to your local extensions directory:
-   ```bash
-   cp -r resizerable@home.lan ~/.local/share/gnome-shell/extensions/
-   ```
+1.  **Clone the Repository:**
+    Get the source code by cloning the Git repository. 
+    ```bash
+    git clone https://github.com/mitterman2/gnome-resizerable-extension resizerable-repo
+    cd resizerable-repo
+    ```
+    *(This command clones the repo into a folder named `resizerable-repo`. The extension files, like `extension.js` and `metadata.json`, should be inside this folder, possibly in a subdirectory if your repository is structured that way.)*
 
-2. Restart GNOME Shell:
-   - On X11: Press `Alt+F2`, type `r`, and press Enter
-   - On Wayland: Log out and log back in
+2.  **Copy the Extension Files:**
+    The extension directory (containing `extension.js`, `prefs.js`, `metadata.json`, etc.) must be copied to `~/.local/share/gnome-shell/extensions/` and the destination directory **must be named `resizerable@home.lan`**.
 
-3. Enable the extension:
-   ```bash
-   gnome-extensions enable resizerable@home.lan
-   ```
+    *   If the `resizerable-repo` directory (cloned in step 1) is the extension itself (i.e., it directly contains `extension.js`, `metadata.json`):
+        ```bash
+        # (If you are inside the 'resizerable-repo' directory)
+        cp -r . ~/.local/share/gnome-shell/extensions/resizerable@home.lan
+        ```
+    *   If the extension files are in a subdirectory within `resizerable-repo` (e.g., a folder named `resizerable@home.lan` already exists within your repo, or another name like `extension_files`):
+        ```bash
+        # (Adjust 'path/to/actual/extension_files_inside_repo' accordingly)
+        cp -r path/to/actual/extension_files_inside_repo ~/.local/share/gnome-shell/extensions/resizerable@home.lan
+        ```
+    *   **Important**: Ensure the final installed path is `~/.local/share/gnome-shell/extensions/resizerable@home.lan`.
+
+3.  **Restart GNOME Shell:**
+    *   On X11: Press `Alt+F2`, type `r`, and press Enter.
+    *   On Wayland: Log out and log back in.
+
+4.  **Enable the Extension:**
+    Use the GNOME Extensions app (it should appear as "Resizerable") or enable it via the command line:
+    ```bash
+    gnome-extensions enable resizerable@home.lan
+    ```
 
 ### Using GNOME Extensions App
 

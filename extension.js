@@ -24,7 +24,6 @@ export default class ResizerableExtension extends Extension {
 
     _resizeWindowToMargins(window) {
         if (!window || !this._settings) {
-            console.error("ResizerableExtension: _resizeWindowToMargins - Invalid window or settings.");
             return;
         }
 
@@ -32,7 +31,6 @@ export default class ResizerableExtension extends Extension {
         const monitor = Main.layoutManager.monitors[monitorIndex];
         
         if (!monitor) {
-            console.error("ResizerableExtension: _resizeWindowToMargins - Could not get monitor for window.");
             return;
         }
 
@@ -56,7 +54,6 @@ export default class ResizerableExtension extends Extension {
             window.unmaximize(Meta.MaximizeFlags.BOTH);
         }
 
-        console.log(`ResizerableExtension: Resizing window '${window.get_title()}' to margins: X=${newX}, Y=${newY}, W=${newWidth}, H=${newHeight}`);
         window.move_resize_frame(true, newX, newY, newWidth, newHeight); // Pass true for user_op
     }
 
@@ -66,7 +63,6 @@ export default class ResizerableExtension extends Extension {
 
         if (window.minimized) { 
             if (this._settings && this._settings.get_boolean('smart-minimize')) {
-                console.log(`ResizerableExtension: Smart Minimize ON for '${windowTitle}'. Evaluating resize conditions.`);
                 const currentRect = window.get_frame_rect();
                 const currentWidth = currentRect.width;
                 const currentHeight = currentRect.height;
@@ -74,7 +70,6 @@ export default class ResizerableExtension extends Extension {
                 const monitorIndex = window.get_monitor();
                 const monitor = Main.layoutManager.monitors[monitorIndex];
                 if (!monitor) {
-                    console.warn(`ResizerableExtension: No monitor for '${windowTitle}' in smart minimize. Allowing normal minimize.`);
                     return; 
                 }
                 const workArea = Main.layoutManager.getWorkAreaForMonitor(monitorIndex);
@@ -87,17 +82,13 @@ export default class ResizerableExtension extends Extension {
                 targetWidth = Math.max(targetWidth, 100);
                 targetHeight = Math.max(targetHeight, 100);
                 const targetArea = targetWidth * targetHeight;
-                console.log(`ResizerableExtension: '${windowTitle}' - CurrentArea: ${currentArea}, TargetArea: ${targetArea}.`);
                 if (currentArea > targetArea) {
-                    console.log(`ResizerableExtension: '${windowTitle}' - Current > Target. Applying smart resize.`);
                     window.unminimize(global.get_current_time());
                     this._resizeWindowToMargins(window);
                 } else {
-                    console.log(`ResizerableExtension: '${windowTitle}' - Current <= Target. Allowing normal minimize.`);
                 }
             }
         } else {
-            console.log(`ResizerableExtension: Window '${windowTitle}' is NOW UNMINIMIZED.`);
         }
     }
 
@@ -106,7 +97,6 @@ export default class ResizerableExtension extends Extension {
         try { windowTitle = window.get_title(); } catch(e) { /* Will be caught if title is inaccessible */ }
 
         if (!window || typeof window.connect !== 'function') {
-            console.warn(`ResizerableExtension: _connectToWindowSignals: Invalid window object for '${windowTitle}'. Cannot connect.`);
             return;
         }
         if (this._windowSignalIds.has(window.get_id())) {
@@ -118,10 +108,8 @@ export default class ResizerableExtension extends Extension {
             if (id > 0) {
                 this._windowSignalIds.set(window.get_id(), { windowObj: window, signalId: id });
             } else {
-                console.error(`ResizerableExtension: _connectToWindowSignals: FAILED for '${windowTitle}' (connect returned non-positive: ${id}).`);
             }
         } catch (e) {
-            console.error(`ResizerableExtension: _connectToWindowSignals: EXCEPTION for '${windowTitle}':`, e);
         }
     }
 
@@ -133,7 +121,6 @@ export default class ResizerableExtension extends Extension {
             try {
                  windowObj.disconnect(signalId);
             } catch (e) {
-                console.error(`ResizerableExtension: EXCEPTION while disconnecting 'notify::minimized' for '${title}':`, e);
             }
             this._windowSignalIds.delete(windowId);
         }
@@ -142,7 +129,6 @@ export default class ResizerableExtension extends Extension {
     enable() {
         this._settings = this.getSettings();
         if (!this._settings) {
-            console.error("ResizerableExtension: FAILED TO GET SETTINGS IN ENABLE! Cannot proceed.");
             return;
         }
 
@@ -163,7 +149,6 @@ export default class ResizerableExtension extends Extension {
                 if (metaWindow) {
                     this._connectToWindowSignals(metaWindow);
                 } else {
-                     console.warn("ResizerableExtension: Actor in existing list did not provide a MetaWindow.");
                 }
             }
         });
@@ -177,13 +162,10 @@ export default class ResizerableExtension extends Extension {
                 });
                 if (this._windowCreatedSignalId > 0) {
                 } else {
-                    console.error(`ResizerableExtension: FAILED to connect to global.display 'window-created' (ret non-positive: ${this._windowCreatedSignalId}).`);
                 }
             } catch (e) {
-                console.error("ResizerableExtension: EXCEPTION while connecting to global.display 'window-created':", e);
             }
         } else {
-            console.error("ResizerableExtension: global.display invalid or no connect method for 'window-created'. New windows might not be tracked.");
         }
 
         if (global.display && typeof global.display.connect === 'function') {
@@ -195,13 +177,10 @@ export default class ResizerableExtension extends Extension {
                 });
                  if (this._windowRemovedSignalId > 0) {
                 } else {
-                    console.error(`ResizerableExtension: FAILED to connect to global.display 'window-removed' (ret non-positive: ${this._windowRemovedSignalId}).`);
                 }
             } catch (e) {
-                console.error("ResizerableExtension: EXCEPTION while connecting to global.display 'window-removed':", e);
             }
         } else {
-            console.error("ResizerableExtension: global.display invalid for 'window-removed'. Window signal cleanup might be incomplete.");
         }
     }
 
@@ -226,12 +205,12 @@ export default class ResizerableExtension extends Extension {
         this._windowSignalIds.clear();
 
         if (this._windowCreatedSignalId && global.display && typeof global.display.disconnect === 'function') {
-            try { global.display.disconnect(this._windowCreatedSignalId); } catch(e) { console.error("Exception disconnecting window-created", e);}
+            try { global.display.disconnect(this._windowCreatedSignalId); } catch(e) { }
         }
         this._windowCreatedSignalId = null;
 
         if (this._windowRemovedSignalId && global.display && typeof global.display.disconnect === 'function') {
-            try { global.display.disconnect(this._windowRemovedSignalId); } catch(e) { console.error("Exception disconnecting window-removed", e);}
+            try { global.display.disconnect(this._windowRemovedSignalId); } catch(e) { }
         }
         this._windowRemovedSignalId = null;
         
@@ -264,7 +243,6 @@ export default class ResizerableExtension extends Extension {
                     () => this._maximizeWindow()
                 );
                 if (!this._maximizeBinding) {
-                    console.warn('Failed to bind maximize shortcut:', maximizeShortcut[0]);
                 }
             }
             
@@ -277,11 +255,9 @@ export default class ResizerableExtension extends Extension {
                     () => this._resizeWindow()
                 );
                 if (!this._resizeBinding) {
-                    console.warn('Failed to bind resize shortcut:', resizeShortcut[0]);
                 }
             }
         } catch (error) {
-            console.error('Error setting up keybindings:', error);
             this._settings.set_strv('key-maximize', []);
             this._settings.set_strv('key-resize', []);
             this._settings.set_strv('resizerable-maximize-window', []);
@@ -301,7 +277,6 @@ export default class ResizerableExtension extends Extension {
                 this._resizeBinding = null;
             }
         } catch (error) {
-            console.error('Error removing keybindings:', error);
             this._maximizeBinding = null;
             this._resizeBinding = null;
         }
@@ -316,7 +291,6 @@ export default class ResizerableExtension extends Extension {
 
     _resizeWindow() {
         if (!this._settings) {
-            console.error("ResizerableExtension: _settings IS NULL in _resizeWindow!");
             return;
         }
         const currentRect = global.display.get_focus_window().get_frame_rect();
@@ -326,7 +300,6 @@ export default class ResizerableExtension extends Extension {
         const monitorIndex = global.display.get_focus_window().get_monitor();
         const monitor = Main.layoutManager.monitors[monitorIndex];
         if (!monitor) {
-            console.warn("ResizerableExtension: _resizeWindow (shortcut) - Could not get monitor. Resizing to margins as fallback.");
             this._resizeWindowToMargins(global.display.get_focus_window());
             return;
         }
