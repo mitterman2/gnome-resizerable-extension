@@ -4,7 +4,7 @@ import Gdk from 'gi://Gdk';
 import Gio from 'gi://Gio';
 import {ExtensionPreferences, gettext as _} from 'resource:///org/gnome/Shell/Extensions/js/extensions/prefs.js';
 
-export default class ResizeablePreferences extends ExtensionPreferences {
+export default class ResizerablePreferences extends ExtensionPreferences {
     fillPreferencesWindow(window) {
         const settings = this.getSettings();
         
