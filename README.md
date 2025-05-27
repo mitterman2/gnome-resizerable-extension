@@ -2,7 +2,7 @@
 
 A GNOME Shell extension that provides keyboard shortcuts to maximize windows or resize them with configurable margins.
 
-100% vibe coded - really liking the extension "useless gaps" but missing the ability to resize the useless gapped "fullscreen" window, i started building this extension. While Resizerable does not restore the pre-fullscreen window size, it does the next best thing, resizing it to 60% of the screen size anchored in the middle of the screen. 
+100% vibe coded - really liking the extension "useless gaps" but missing the ability to restore the useless gapped "fullscreen" window to its previous size, i started building this extension. While Resizerable does not restore the pre-fullscreen window size, it does the next best thing, resizing it to 60% of the screen size anchored in the middle of the screen. 
 
 ## Features
 
@@ -12,6 +12,7 @@ A GNOME Shell extension that provides keyboard shortcuts to maximize windows or 
 - **Custom Keyboard Shortcuts**: Assign your own keyboard shortcuts for both actions
 - **Reset to Defaults**: Easily reset all settings to default values
 - **Multi-monitor Support**: Works correctly across multiple monitors
+- **Smart Minimize**: Hijacks a Windows minimize button and resizes to target margins. If the window is at target margin or smaller, it minimizes. Applies to Keyboard shortcut aswell.
 
 ## Default Settings
 
