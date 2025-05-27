@@ -47,7 +47,7 @@ A GNOME Shell extension that provides keyboard shortcuts to maximize windows or 
     *   **Important**: Ensure the final installed path is `~/.local/share/gnome-shell/extensions/resizerable@home.lan`.
 
 3.  **Restart GNOME Shell:**
-    *   On X11: Press `Alt+F2`, type `r`, and press Enter.
+    *   On X11: Press `Alt+F2`, type `r`, and press Enter. (actually no idea if this extension works on X11)
     *   On Wayland: Log out and log back in.
 
 4.  **Enable the Extension:**
